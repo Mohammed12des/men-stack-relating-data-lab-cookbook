@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const session = require('express-session');
+const authController = require('./controllers/auth.js');
+const foodsController = require('./controllers/foods.js');
 
 const authController = require('./controllers/auth.js');
 
@@ -27,6 +29,10 @@ app.use(
     saveUninitialized: true,
   })
 );
+// server.js
+
+app.use('/auth', authController);
+app.use('/users/:userId/foods',foodsController);
 
 app.get('/', (req, res) => {
   res.render('index.ejs', {
