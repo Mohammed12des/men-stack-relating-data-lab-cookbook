@@ -6,7 +6,7 @@ const User = require("../models/user"); // Adjust path as necessary
 router.get("/", async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
-    res.render("foods/index.", {
+    res.render("foods/index.ejs", {
       foods: currentUser.pantry,
     });
   } catch (error) {
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET form to create new food item
-router.get("/new", (req, res) => {
+router.get("/new", async (req, res) => {
   res.render("foods/new.ejs");
 });
 
@@ -34,12 +34,12 @@ router.post("/", async (req, res) => {
 });
 
 // GET specific food item
-router.get("/:itemId", async (req, res) => {
+router.get("/:foodId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
-    const item = currentUser.pantry.id(req.params.itemId);
+    const food = currentUser.pantry.id(req.params.itemId);
     res.render("foods/show.ejs", {
-      item: item,
+      food: food,
     });
   } catch (error) {
     console.log(error);
@@ -48,7 +48,7 @@ router.get("/:itemId", async (req, res) => {
 });
 
 // DELETE food item
-router.delete("/:itemId", async (req, res) => {
+router.delete("/:foodId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
     currentUser.pantry.id(req.params.itemId).deleteOne();
@@ -61,12 +61,12 @@ router.delete("/:itemId", async (req, res) => {
 });
 
 // GET edit form for a food item
-router.get("/:itemId/edit", async (req, res) => {
+router.get("/:foodId/edit", async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
-    const item = currentUser.pantry.id(req.params.itemId);
+    const foods = currentUser.pantry.id(req.params.itemId);
     res.render("foods/edit.ejs", {
-      item: item,
+      foods,
     });
   } catch (error) {
     console.log(error);
@@ -75,13 +75,13 @@ router.get("/:itemId/edit", async (req, res) => {
 });
 
 // PUT (update) food item
-router.put("/:itemId", async (req, res) => {
+router.put("/:foodId", async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
-    const item = currentUser.pantry.id(req.params.itemId); // Corrected here
-    item.set(req.body); // Change 'food' to 'item'
+    const food = currentUser.pantry.id(req.params.itemId);
+    food.set(req.body);
     await currentUser.save();
-    res.redirect(`/users/${currentUser._id}/foods/`); // Fixed redirect path
+    res.redirect(`/users/${currentUser._id}/foods/${req.params.foodId}`);
   } catch (error) {
     console.log(error);
     res.redirect("/");

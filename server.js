@@ -52,7 +52,6 @@ app.use(passUserToView);
 app.use("/auth", authController);
 app.use(isSignedIn);
 app.use("/users/:userId/foods", foodsController);
-app.use("/auth", authController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
