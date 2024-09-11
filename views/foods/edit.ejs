@@ -1,25 +1,33 @@
-<!-- views/applications/index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Editing <%= food.name %></title>
+    <title>Edit</title>
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1>Edit <%= food.name %></h1>
+    <h1>Edit Food</h1>
     <form
       action="/users/<%= user._id %>/foods/<%= food._id %>?_method=PUT"
       method="POST"
     >
-      <fieldset>
-        <label for="name">Name:</label>
-        <input type="text" name="name" value="<%= food.name%>" />
-      </fieldset>
-
-      <button type="submit">Update the food</button>
+      <label for="name">Food Name:</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value="<%= food.name %>"
+        required
+      />
+      <label for="description">Food Description:</label>
+      <input
+        type="text"
+        name="description"
+        value="<%= food.description %>"
+        required
+      />
+      <button type="submit">Update</button>
     </form>
   </body>
 </html>
